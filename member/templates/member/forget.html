@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{%load static %}
+{% block content %}
+<script type="text/javascript" src="{% static 'scripts/selectivizr.js' %}"></script>
+<link rel="stylesheet" href="{% static 'styles/style.css' %}" type="text/css" />
+<noscript><link rel="stylesheet" href="{% static 'styles/fallback.css' %}" /></noscript>
+      <form method="POST" >
+            {%csrf_token%}
+                <div class="login">忘記密碼?</div>
+                <div class="username-text">電子郵件</div>             
+                <div class="password-field">
+                    <input type="password" class="form-control" name="useremail" id="useremail" placeholder="Email" />
+                </div>
+            
+        
+                <input type="submit" name="submit" value="GO"  />
+            </form>
+{% endblock %}

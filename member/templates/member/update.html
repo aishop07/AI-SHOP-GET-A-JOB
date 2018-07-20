@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content%}
+<form method="POST">
+    {% csrf_token %}   
+    <div class="form-group row" style="position: relative;left: 40%;">
+        <label for="username">姓名</label>
+        <input type="text" style="width: 30%" value= "{{ member.username }}" class="form-control" name="username" id="username" placeholder="User Name">
+    </div>
+    <div class="form-group row" style="position: relative;left: 40%;">
+        <label for="userbirth" >密碼</label>
+        <input type="password" style="width: 30%" value="{{ member.password }}" class="form-control" name="password" id="password" placeholder="Passsword">
+    </div>
+    <div class="form-group row" style="position: relative;left: 40%;">
+        <label for="useremail" >電子郵件</label>
+            <input type="email" style="width: 30%" value="{{ member.useremail }}" class="form-control" name="useremail" id="useremail" placeholder="User Email">
+    </div>
+    <div class="form-group row" style="position: relative;left: 40%;">
+        <label for="userbirth" >生日</label>
+        <input type="date" style="width: 30%" value="{{ member.userbirth | date:'Y-m-d' }}" class="form-control" name="userbirth" id="userbirth" placeholder="Birthday">
+    </div>
+    <div class="form-group row" style="position: relative;left: 54%;margin-top: 10px">
+            <button type="submit" class="btn btn-primary"> <a href="{% url 'member:update' member.id %}">修改</a></button>
+    </div>
+</form>
+{%endblock%}

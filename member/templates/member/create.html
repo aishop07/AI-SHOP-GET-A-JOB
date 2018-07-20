@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="POST">
+        {% csrf_token %} 
+        
+        <div class="form-grouprow" style="position: relative;left: 40%;">
+            <label for="username">姓名</label>
+            <input style="width: 30%" type="text" class="form-control" name="username" id="username" placeholder="User Name">
+        </div>
+        <div class="form-grouprow" style="position: relative;left: 40%;">
+            <label for="password">密碼</label>
+            <input style="width: 30%" type="password" class="form-control" name="password" id="password" placeholder="Password">
+        </div>
+        <div class="form-grouprow" style="position: relative;left: 40%;">
+            <label for="useremail">電子郵件</label>
+            <input style="width: 30%" type="email" class="form-control" name="useremail" id="useremail" placeholder="User Email">
+        </div>
+        <div class="form-grouprow" style="position: relative;left: 40%;">
+            <label for="userbirth">生日</label>
+            <input style="width: 30%" type="date" class="form-control" name="userbirth" id="userbirth" placeholder="Birthday">
+        </div>
+        <div class="form-grouprow" style="position: relative;left: 54%;margin-top: 10px">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-bath" aria-hidden="true"></i>註冊</button>
+            </div>
+        </div>
+    
+    </form>
+{% endblock %}
