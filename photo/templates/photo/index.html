@@ -1,16 +1,26 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-<h1>來照相吧!</h1>
-<input type="button" value="take a picture" id="getphoto">
+<h1>{{now}}</h1>
+<input type="button" value="take a photo" id="takephoto">
+<input type="button" value="view photo" id="getphoto"><br><br>
+<!-- <img id='img' src="{% static '/images/test_result.jpg' %}" hidden="hidden" > -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
     
-        $('#getphoto').click(function () {
-            var url = "getphoto";
+        $('#takephoto').click(function () {
+            var url = "takephoto";
             
             $.getJSON(url,function(){
                 alert('拍照成功')
+            })
+        })
+        $('#getphoto').click(function(){
+            var url = "getphoto";
+            
+            $.getJSON(url,function(){
+                location.href='image'
             })
         })
 
