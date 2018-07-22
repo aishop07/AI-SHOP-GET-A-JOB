@@ -1,0 +1,32 @@
+{% extends 'base.html'%} {% block content %}
+<h2 style="text-align: center">{{request.COOKIES.name}}您好</h2>
+<table style="border:2px solid black;width: 70%;text-align: center;font-size: 24px;margin: 10px auto;background-color: black">
+    <thead style="border:1px solid black">
+
+    </thead>
+    <tbody>
+        {% regroup orders by datetime as orders_by_datetime %} {% for datetime in orders_by_datetime %}
+        <tr>
+            <td>{{datetime.grouper}}</td>
+        </tr>
+        <tr>
+            <td>收據編號:{{datetime.list.0.order_number}}</td>
+        </tr>
+        <tr>
+                <th style="border:3px solid white;text-align: center">商品名稱</th>
+                <th style="border:3px solid white;text-align: center">商品單價價格</th>
+                <th style="border:3px solid white;text-align: center">商品購買數量</th>
+                <th style="border:3px solid white;text-align: center">商品購買總價格</th>
+            </tr>
+        {% for order in datetime.list %}
+        <tr>
+
+            <td style="border:3px solid white">{{order.product_name}}</td>
+            <td style="border:3px solid white">{{order.price}}</td>
+            <td style="border:3px solid white">{{order.qt}}</td>
+            <td style="border:3px solid white">{% widthratio order.price 1 order.qt %}</td>
+        </tr>{% endfor %} {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

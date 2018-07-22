@@ -1,0 +1,30 @@
+{% extends 'base.html'%}
+{% block content %}
+<table style="border:2px solid black;width: 100%;text-align: center;font-size: 24px">
+    <thead style="border:1px solid black">
+        <tr >
+            <th style="border:3px solid black">商品名稱</th>
+            <th style="border:3px solid black">商品價格</th>
+            <th style="border:3px solid black">商品數量</th>
+        </tr>
+    </thead>
+<tbody>
+{% for food in foods %}
+<tr>
+    <td style="border:1px solid rgb(169, 135, 207)"><img src="{{food.image}}" width='150px' height="150px">{{food.name}}</td>
+    <td style="border:1px solid rgb(169, 135, 207)">{{food.price}}</td>
+    <td style="border:1px solid rgb(169, 135, 207)">{{food.qt}}</td>
+
+</tr>
+{% endfor %}
+{% for drink in drinks %}
+<tr>
+    <td style="border:1px solid rgb(169, 135, 207)"><img src="{{drink.image}}" width='150px' height="150px">{{drink.name}}</td>
+    <td style="border:1px solid rgb(169, 135, 207)">{{drink.price}}</td>
+    <td style="border:1px solid rgb(169, 135, 207)">{{drink.qt}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
