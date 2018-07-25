@@ -21,7 +21,7 @@ class OrdersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Orders
         # fields = '__all__'
-        fields = ('id', 'order_number', 'user_name', 'product_name', 'price', 'qt', 'image','datetime')
+        fields = ('id', 'order_number', 'user_name', 'product_name', 'price', 'qt', 'image','datetime','name')
 
 class MemberSerializer(serializers.ModelSerializer):
  

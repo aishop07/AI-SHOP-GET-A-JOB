@@ -15,6 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from django.conf.urls import url
+from rest_framework.routers import DefaultRouter
+from products import views
+
+router_drinks = DefaultRouter()
+router_drinks.register(r'drinks', views.DrinksViewSet)
+router_foods = DefaultRouter()
+router_foods.register(r'foods', views.FoodsViewSet)
+router_orders = DefaultRouter()
+router_orders.register(r'orders', views.OrdersViewSet)
+router_member = DefaultRouter()
+router_member.register(r'members', views.MemberViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -22,4 +34,8 @@ urlpatterns = [
     path('member/',include('member.urls')),
     path('products/',include('products.urls')),
     path('photo/',include('photo.urls')),
+    url(r'^api/', include(router_drinks.urls)),
+    url(r'^api/', include(router_foods.urls)),
+    url(r'^api/', include(router_orders.urls)),
+    url(r'^api/', include(router_member.urls))
 ]

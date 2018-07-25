@@ -4,3 +4,4 @@ home/__pycache__/
 home/migrations/
 member/__pycache__/
 member/migrations/
+products/__pycache__/
