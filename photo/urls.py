@@ -8,5 +8,6 @@ urlpatterns = [
     path('',views.index,name='index'),
     path('takephoto',views.takephoto,name='takephoto'),
     path('getphoto',views.getphoto,name='getphoto'),
+    path('takephotos',views.takephotos,name='takephotos'),
     path('image',views.image,name='image'),
 ]
