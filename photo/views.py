@@ -5,6 +5,15 @@ import numpy as np
 import cv2
 import paramiko
 from time import sleep
+import os
+import json
+with open('photo/config.json' , 'r') as reader:
+    config = json.loads(reader.read())
+
+account = config['account']
+password = config['password']
+ip = config['ip']
+
 # from time import sleep
 
 # Create your views here.
@@ -34,11 +43,11 @@ def takephoto(request):
     cv2.destroyAllWindows()
 
     #將檔案上傳至Linux
-    t = paramiko.Transport(('192.168.2.16',22))
-    t.connect(username = '你的帳號', password = '你的密碼')
+    t = paramiko.Transport((ip,22))
+    t.connect(username = account, password = password)
     sftp = paramiko.SFTPClient.from_transport(t)
 
-    remotepath='/home/arron1294/test/test.jpg'
+    remotepath='/home/' + account + '/test/test.jpg'
     localpath='./photo/static/images/test.jpg'
 
 
@@ -49,7 +58,7 @@ def takephoto(request):
     #執行臉部偵測(fdetect2.py))
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect("192.168.2.16",22,"你的帳號", "你的密碼")
+    ssh.connect(ip,22, account, password)
     stdin, stdout, stderr = ssh.exec_command("cd test/; python3 fdetect2.py")
     print(stdout.readlines())
     ssh.close()
@@ -59,11 +68,11 @@ def takephoto(request):
 
     
 def getphoto(request):
-    t = paramiko.Transport(('192.168.2.16',22))
-    t.connect(username = '你的帳號', password = '你的密碼')
+    t = paramiko.Transport((ip,22))
+    t.connect(username = account, password = password)
     sftp = paramiko.SFTPClient.from_transport(t)
 
-    remotepath='/home/你的帳號/test/test_result.jpg'
+    remotepath='/home/' + config['account'] + '/test/test_result.jpg'
     localpath='./photo/static/images/test_result.jpg'
 
     sftp.get(remotepath,localpath) #上传文件
@@ -73,18 +82,27 @@ def getphoto(request):
 
 def takephotos(request):
     
+    dirs = os.listdir('./photo/static/images')
+    s_dirs = []
+    for dir_name in dirs:
+        if not dir_name.startswith("s"):
+            continue
+        s_name = int(dir_name.replace("s", ""))
+        s_dirs.append(s_name)
+    new_folder = 's'+ str(s_dirs[-1] + 1)
+    os.mkdir('./photo/static/images/' + new_folder + '/')
     camera = cv2.VideoCapture(0)
     while(True):
         ret, frame = camera.read()
         
         # Camera warm-up time
         cv2.imshow('frame',frame)
-        if cv2.waitKey(20) & 0xFF == ord('\r'):
+        if cv2.waitKey(20) & 0xFF == ord(' '):
             for i in range(1,13):
                 while(True):
                     ret, frame = camera.read()
                     cv2.imshow('frame',frame)
-                    cv2.imwrite("./photo/static/images/" + str(i) + ".jpg", frame)
+                    cv2.imwrite("./photo/static/images/" + new_folder + "/" + str(i) + ".jpg", frame)
                     break
             break
         
@@ -92,15 +110,15 @@ def takephotos(request):
     camera.release()
     cv2.destroyAllWindows()
 
-    t = paramiko.Transport(('192.168.2.16',22))
-    t.connect(username = '你的帳號', password = '你的密碼')
+    t = paramiko.Transport((ip,22))
+    t.connect(username = account, password = password)
     sftp = paramiko.SFTPClient.from_transport(t)
-
-    for i in range(1,13):
-
-        remotepath='/home/你的帳號/test/training-data/s3/' + str(i) + '.jpg'
-        localpath='./photo/static/images/' + str(i) + '.jpg'
-
+    sftp.mkdir('/home/' + account + '/test/training-data/' + new_folder + '/')
+    local_images = os.listdir('./photo/static/images/' + new_folder + '/')
+    for image in local_images:
+        
+        remotepath='/home/' + account + '/test/training-data/' + new_folder + '/' + image
+        localpath='./photo/static/images/' + new_folder + '/' + image
         sftp.put(localpath,remotepath) #上传文件
 
     sftp.close()
