@@ -34,7 +34,7 @@ def takephoto(request):
         # Display the resulting frame
         cv2.imshow('frame',frame)
         # cv2.imshow('gray',gray)
-        if cv2.waitKey(20) & 0xFF == ord('q'):
+        if cv2.waitKey(20) & 0xFF == ord(' '):
             cv2.imwrite("./photo/static/images/test.jpg", frame)
             break
 
@@ -82,7 +82,7 @@ def getphoto(request):
 
 def takephotos(request):
     # get cookies 抓取登入者姓名
-    name = request.COOKIES.get('name')
+    name = request.COOKIES.get('name1')
     # 將名字寫進labels.txt
     f = open('./photo/labels.txt','a')
     f.write('\n' + name)
@@ -143,6 +143,39 @@ def takephotos(request):
     return HttpResponse('123')
 
 def login(request):
+    cap = cv2.VideoCapture(0)
+
+    while(True):
+        # Capture frame-by-frame
+        ret, frame = cap.read()
+
+        # Our operations on the frame come here
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        # Display the resulting frame
+        cv2.imshow('frame',frame)
+        # cv2.imshow('gray',gray)
+        if cv2.waitKey(20) & 0xFF == ord(' '):
+            cv2.imwrite("./photo/static/images/pred.jpg", frame)
+            break
+
+    # When everything done, release the capture
+    cap.release()
+    cv2.destroyAllWindows()
+
+    #將檔案上傳至Linux
+    t = paramiko.Transport((ip,22))
+    t.connect(username = account, password = password)
+    sftp = paramiko.SFTPClient.from_transport(t)
+
+    remotepath='/home/' + account + '/test/test-data/pred.jpg'
+    localpath='./photo/static/images/pred.jpg'
+
+    sftp.put(localpath,remotepath) #上传文件
+    sftp.close()
+    t.close()
+
+
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ip,22, account, password)
@@ -151,8 +184,12 @@ def login(request):
     ssh.close()
     print(getname)
     getname = getname[2].split(':')[1].split()[0]
-    print(getname)
-    return HttpResponse('123')
+    name = {}
+    name["name"] = getname
+    print(name)
+    # return HttpResponse(name)
+    return HttpResponse(json.dumps(name))
+    # return HttpResponse(getname)
 
 def image(request):
     return render(request,'photo/image.html',locals())

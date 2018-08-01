@@ -29,11 +29,11 @@
             var name;
             name=prompt("請輸入你的名字","")
             if(name){
-                document.cookie = "name="+name
+                document.cookie = "name1="+name
                 var url = "takephotos";
             
                 $.getJSON(url,function(){
-                    alert('拍照成功')
+                    alert('註冊成功')
                 })
             }else{
                 return
@@ -43,12 +43,12 @@
         $('#login').click(function(){
             var url = "login";
             
-            $.getJSON(url,function(){
-                alert('登入成功')
-                var ajax = new XMLHttpRequest();
-                var response = ajax.responseText;
-                alert(response);
+            $.getJSON(url,function(data){ 
+                alert('Hi  ' + data.name)
+                document.cookie = "name="+data.name
+                // location.href='/'
             })
+            
         })
 
     })
