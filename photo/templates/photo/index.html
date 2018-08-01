@@ -5,6 +5,7 @@
 <input type="button" value="take a photo" id="takephoto">
 <input type="button" value="view photo" id="getphoto"><br><br>
 <input type="button" value="take photos" id="takephotos">
+<input type="button" value="Login" id="login">
 <!-- <img id='img' src="{% static '/images/test_result.jpg' %}" hidden="hidden" > -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
@@ -25,10 +26,28 @@
             })
         })
         $('#takephotos').click(function () {
-            var url = "takephotos";
+            var name;
+            name=prompt("請輸入你的名字","")
+            if(name){
+                document.cookie = "name="+name
+                var url = "takephotos";
+            
+                $.getJSON(url,function(){
+                    alert('拍照成功')
+                })
+            }else{
+                return
+            }
+            
+        })
+        $('#login').click(function(){
+            var url = "login";
             
             $.getJSON(url,function(){
-                alert('拍照成功')
+                alert('登入成功')
+                var ajax = new XMLHttpRequest();
+                var response = ajax.responseText;
+                alert(response);
             })
         })
 

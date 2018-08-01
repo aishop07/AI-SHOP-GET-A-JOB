@@ -9,5 +9,6 @@ urlpatterns = [
     path('takephoto',views.takephoto,name='takephoto'),
     path('getphoto',views.getphoto,name='getphoto'),
     path('takephotos',views.takephotos,name='takephotos'),
+    path('login',views.login,name='login'),
     path('image',views.image,name='image'),
 ]

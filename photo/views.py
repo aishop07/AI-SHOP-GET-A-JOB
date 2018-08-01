@@ -81,7 +81,13 @@ def getphoto(request):
     return HttpResponse('123')
 
 def takephotos(request):
-    
+    # get cookies 抓取登入者姓名
+    name = request.COOKIES.get('name')
+    # 將名字寫進labels.txt
+    f = open('./photo/labels.txt','a')
+    f.write('\n' + name)
+    f.close()
+    # 新增照片資料夾 ex:s1,s2...
     dirs = os.listdir('./photo/static/images')
     s_dirs = []
     for dir_name in dirs:
@@ -91,6 +97,7 @@ def takephotos(request):
         s_dirs.append(s_name)
     new_folder = 's'+ str(s_dirs[-1] + 1)
     os.mkdir('./photo/static/images/' + new_folder + '/')
+    # 開啟web cam拍照
     camera = cv2.VideoCapture(0)
     while(True):
         ret, frame = camera.read()
@@ -121,9 +128,31 @@ def takephotos(request):
         localpath='./photo/static/images/' + new_folder + '/' + image
         sftp.put(localpath,remotepath) #上传文件
 
+    sftp.put('./photo/labels.txt','/home/' + account + '/test/labels.txt')
     sftp.close()
     t.close()
-    return render(request,'photo/image.html',locals())
+    
+    #訓練Model
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(ip,22, account, password)
+    stdin, stdout, stderr = ssh.exec_command("cd test/; python3 Face-Recognition-Train.py labels.txt")
+    print(stdout.readlines())
+    ssh.close()
+
+    return HttpResponse('123')
+
+def login(request):
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(ip,22, account, password)
+    stdin, stdout, stderr = ssh.exec_command("cd test/; python3 Face-Recognition-Predect.py labels.txt")
+    getname = stdout.readlines()
+    ssh.close()
+    print(getname)
+    getname = getname[2].split(':')[1].split()[0]
+    print(getname)
+    return HttpResponse('123')
 
 def image(request):
     return render(request,'photo/image.html',locals())
