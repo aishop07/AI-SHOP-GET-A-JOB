@@ -38,10 +38,10 @@ with open(sys.argv[1]) as fp:
         subjects+=[data.strip('\n')]
 
 #create our LBPH face recognizer
-face_recognizer = cv2.face.LBPHFaceRecognizer_create()
+#face_recognizer = cv2.face.LBPHFaceRecognizer_create()
 
 #read trained data
-face_recognizer.read('training-data/trainner.yml')
+#face_recognizer.read('training-data/models/model1.yml')
         
 # ### Prediction
 
@@ -85,11 +85,14 @@ def predict(test_img):
         return test_img
 
     #predict the image using our face recognizer
+    #face_recognizer = cv2.face.LBPHFaceRecognizer_create()
     label, confidence = face_recognizer.predict(face)
-    print('Confidence:',confidence)
+    conf = confidence
+    #print('Confidence:',confidence)
     #get name of respective label returned by face recognizer
     label_text = subjects[label]
-    print('name:',label_text)
+    #print(label_text)
+    #print('name:',label_text)
     f = open('label_name.txt','w')
     f.write(label_text)
     f.close()
@@ -98,7 +101,7 @@ def predict(test_img):
     #draw name of predicted person
     draw_text(img, label_text, rect[0], rect[1]-5)
 
-    return img
+    return img,conf
 
 # Now that we have the prediction function well defined, next step is to actually call this function on our test images and display those test images to see if our face recognizer correctly recognized them. So let's do it. This is what we have been waiting for.
 
@@ -117,13 +120,20 @@ for image_name in test_images_names:
 
     #load test images
     test_img = cv2.imread("test-data/"+image_name)
-
-    #perform a prediction
-    predicted_img = predict(test_img)
-
+    models = os.listdir('training-data/models')
+    print(models)
+    for model in models:
+        print(model)
+        face_recognizer = cv2.face.LBPHFaceRecognizer_create()
+        face_recognizer.read('training-data/models/'+ model)
+        #perform a prediction
+        predicted_img,conf = predict(test_img)
+        print(conf)
+        if int(conf)<30:
+            break
     #display image
     #cv2.imshow('Predicted', cv2.resize(predicted_img, (400, 500)))
-    cv2.waitKey(0)
+    #cv2.waitKey(0)
 
 print("Prediction complete")
 

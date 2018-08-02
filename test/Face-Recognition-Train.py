@@ -243,7 +243,12 @@ face_recognizer = cv2.face.LBPHFaceRecognizer_create()
 face_recognizer.train(faces, np.array(labels))
 
 #save trained data
-face_recognizer.write('training-data/trainner.yml')
+name = []
+with open(sys.argv[1]) as fp:
+    for data in fp:
+        name+=[data.strip('\n')]
+
+face_recognizer.write('training-data/models/'+ name[0] +'.yml')
 
 
 # **Did you notice** that instead of passing `labels` vector directly to face recognizer I am first converting it to **numpy** array? This is because OpenCV expects labels vector to be a `numpy` array.

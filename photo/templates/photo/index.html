@@ -32,8 +32,12 @@
                 document.cookie = "name1="+name
                 var url = "takephotos";
             
-                $.getJSON(url,function(){
-                    alert('註冊成功')
+                $.getJSON(url,function(data){
+                    if(data.img == "error"){
+                        alert("註冊失敗!請重新註冊!")
+                    }else{
+                        alert('註冊成功')
+                    }
                 })
             }else{
                 return
@@ -43,10 +47,16 @@
         $('#login').click(function(){
             var url = "login";
             
-            $.getJSON(url,function(data){ 
-                alert('Hi  ' + data.name)
-                document.cookie = "name="+data.name
-                // location.href='/'
+            $.getJSON(url,function(data){
+                if(data.name == 'error'){
+                    alert('臉部辨識錯誤，請重新登入')
+                } else{
+                    alert('Hi  ' + data.name)
+                    document.cookie = "name="+data.name
+                    // location.href='/'
+                }
+                
+                
             })
             
         })
