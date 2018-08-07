@@ -62,7 +62,7 @@ def create(request):
         Member.objects.create(username=username,password=password,useremail=useremail,userbirth=userbirth)
         
         #todo 新增完成後轉到http://localhost:8000/member
-        return redirect("/member/memberarea")
+        return redirect("/member/login")
        
     title = "會員新增" 
     return render(request,'member/create.html',locals())
