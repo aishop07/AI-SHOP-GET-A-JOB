@@ -2,10 +2,10 @@
 {% block content %}
 <div style='font-size:24px;color:white'>
 {%if request.COOKIES.name %}
-<button  class="btn btn-primary btn-lg" style='left:30%;'><a href="{% url 'photo:takephotos' %}"style='font-size:24px;color:white'>頭像註冊</a></button>
-<button type="button" class="btn btn-primary btn-lg" style='left:34%;'><a href="{% url 'member:logout' %}"style='font-size:24px;color:white'>登出 </a></button>
-<button type="button" class="btn btn-primary btn-lg" style='left:37%;'><a href="{% url 'member:update' member.id %}"style='font-size:24px;color:white'>資料修改</a></button>
-<button type="button" class="btn btn-primary btn-lg" style='left:38%;'><a href="{% url 'products:index' %}"style='font-size:24px;color:white'>購物明細 </a></button>
+<button id="takephotos" type="button" class="btn btn-primary btn-lg" style='left:30%;font-size:24px;color:white'>頭像註冊</button>
+<button type="button" class="btn btn-primary btn-lg" style='left:34%;'><a href="{% url 'member:logout' %}" style='font-size:24px;color:white'>登出 </a></button>
+<button type="button" class="btn btn-primary btn-lg" style='left:37%;'><a href="{% url 'member:update' member.id %}" style='font-size:24px;color:white'>資料修改</a></button>
+<button type="button" class="btn btn-primary btn-lg" style='left:38%;'><a href="{% url 'products:index' %}" style='font-size:24px;color:white'>購物明細 </a></button>
 <!-- {%else%}
 <button type="button" class="btn btn-primary btn-lg" style='position:relative;left:36%;'><a href="{% url 'member:login' %}"style='font-size:24px;color:white'>傳統登入 </a></button>
 <button type="button" class="btn btn-primary btn-lg" style='position:relative;left:37%;'><a href="{% url 'member:create' %}"style='font-size:24px;color:white'>會員註冊 </a></button> -->

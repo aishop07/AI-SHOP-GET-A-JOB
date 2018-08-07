@@ -188,14 +188,17 @@ def login(request):
     name = {}
     if getname == 'Predic':
         name["name"] = 'error'
+        response = HttpResponse("<script>alert('登入失敗，請看著鏡頭重新登入');location.href='/photo/login'</script>")
         print('Face Error')
     else:
         name["name"] = getname
+        response = HttpResponse("<script>alert('Hi! " + getname + "');location.href='/member/memberarea'</script>")
+        response.set_cookie("name",getname)
         print(getname)
         print('登入成功')
     
-    # return HttpResponse('123')
-    return HttpResponse(json.dumps(name))
+    return response
+    # return HttpResponse(json.dumps(name))
     # return HttpResponse(getname)
 
 def image(request):

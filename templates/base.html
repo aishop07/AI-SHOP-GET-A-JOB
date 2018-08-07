@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{% static 'css/templatemo_misc.css' %}">
     <link href="{% static 'css/templatemo_style.css' %}" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Raleway:400,100,600' rel='stylesheet' type='text/css'>
-      
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
     <script src="{% static 'js/jquery-1.10.2.min.js' %}"></script> 
 	  <script src="{% static 'js/jquery.lightbox.js' %}"></script>
 	  <script src="{% static 'js/templatemo_custom.js' %}"></script>
@@ -57,7 +57,7 @@
 				        </a>
 					</div> <!-- /.col-md-12 -->
                     <div class="col-md-3 col-sm-12">
-                      <a href="#"><img src="{% static 'images/03.png'%}" >
+                      <a href="#"><img src="{% static 'images/ailogo.jpg'%}" >
                       </a>
                     </div>
                     
@@ -781,6 +781,31 @@
 		}
 	});
     </script>
+    <script>
+      $('#takephotos').click(function () {   
+          
+          var url = "/photo/takephotos";
+          $.getJSON(url,function(data){
+              if(data.img == "error"){
+                  alert("頭像註冊失敗!請重新註冊!")
+              }else{
+                  alert('頭像註冊成功')
+              }
+          })    
+              
+      })
+      $('#login').click(function(){
+          location.href = "/photo/login"
+       })
+  </script>
+  <script>
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            xhr.setRequestHeader('X-CSRFToken',
+                '{{ csrf_token }}');
+        }
+    });
+</script>
 	<!-- templatemo 400 polygon -->
   </body>
 </html>
