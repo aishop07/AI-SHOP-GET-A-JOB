@@ -82,50 +82,38 @@ def getphoto(request):
 
 def takephotos(request):
     # get cookies 抓取登入者姓名
-    name = request.COOKIES.get('name1')
+    name = request.COOKIES.get('name')
     # 將名字寫進labels.txt
-    f = open('./photo/labels.txt','a')
-    f.write('\n' + name)
+    f = open('./photo/labels.txt','w')
+    f.write(name)
     f.close()
-    # 新增照片資料夾 ex:s1,s2...
-    dirs = os.listdir('./photo/static/images')
-    s_dirs = []
-    for dir_name in dirs:
-        if not dir_name.startswith("s"):
-            continue
-        s_name = int(dir_name.replace("s", ""))
-        s_dirs.append(s_name)
-    new_folder = 's'+ str(s_dirs[-1] + 1)
-    os.mkdir('./photo/static/images/' + new_folder + '/')
+    
     # 開啟web cam拍照
     camera = cv2.VideoCapture(0)
+
     while(True):
         ret, frame = camera.read()
-        
-        # Camera warm-up time
         cv2.imshow('frame',frame)
         if cv2.waitKey(20) & 0xFF == ord(' '):
             for i in range(1,13):
                 while(True):
                     ret, frame = camera.read()
                     cv2.imshow('frame',frame)
-                    cv2.imwrite("./photo/static/images/" + new_folder + "/" + str(i) + ".jpg", frame)
+                    cv2.imwrite("./photo/static/images/s1/" + str(i) + ".jpg", frame)
                     break
             break
         
-
     camera.release()
     cv2.destroyAllWindows()
 
     t = paramiko.Transport((ip,22))
     t.connect(username = account, password = password)
     sftp = paramiko.SFTPClient.from_transport(t)
-    sftp.mkdir('/home/' + account + '/test/training-data/' + new_folder + '/')
-    local_images = os.listdir('./photo/static/images/' + new_folder + '/')
+
+    local_images = os.listdir('./photo/static/images/s1/')
     for image in local_images:
-        
-        remotepath='/home/' + account + '/test/training-data/' + new_folder + '/' + image
-        localpath='./photo/static/images/' + new_folder + '/' + image
+        remotepath='/home/' + account + '/test/training-data/s1/'+ image
+        localpath='./photo/static/images/s1/' + image
         sftp.put(localpath,remotepath) #上传文件
 
     sftp.put('./photo/labels.txt','/home/' + account + '/test/labels.txt')
@@ -137,10 +125,22 @@ def takephotos(request):
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(ip,22, account, password)
     stdin, stdout, stderr = ssh.exec_command("cd test/; python3 Face-Recognition-Train.py labels.txt")
-    print(stdout.readlines())
+    getresult = stdout.readlines()
     ssh.close()
+    
+    getresult = getresult[-1].split(':')[1].split()
+    print(getresult)
+    img = {}
+    if int(getresult[0]) < 5:
+        img["img"] = 'error'
+        print('Face Error')
+    else:
+        img["img"] = 'OK'
+        print('註冊成功')
 
-    return HttpResponse('123')
+    
+
+    return HttpResponse(json.dumps(img))
 
 def login(request):
     cap = cv2.VideoCapture(0)
@@ -182,12 +182,19 @@ def login(request):
     stdin, stdout, stderr = ssh.exec_command("cd test/; python3 Face-Recognition-Predect.py labels.txt")
     getname = stdout.readlines()
     ssh.close()
-    print(getname)
-    getname = getname[2].split(':')[1].split()[0]
+    # print(getname)
+    getname = getname[-3].split()[0][:-4]
+    # print(getname[:-4])
     name = {}
-    name["name"] = getname
-    print(name)
-    # return HttpResponse(name)
+    if getname == 'Predic':
+        name["name"] = 'error'
+        print('Face Error')
+    else:
+        name["name"] = getname
+        print(getname)
+        print('登入成功')
+    
+    # return HttpResponse('123')
     return HttpResponse(json.dumps(name))
     # return HttpResponse(getname)
 

@@ -2,6 +2,7 @@
 {% block content %}
 <div style='font-size:24px;color:white'>
 {%if request.COOKIES.name %}
+<button  class="btn btn-primary btn-lg" style='position:relative;left:34%;'><a href="{% url 'photo:takephotos' %}"style='font-size:24px;color:white'>頭像註冊</a></button>
 <button type="button" class="btn btn-primary btn-lg" style='position:relative;left:36%;'><a href="{% url 'member:logout' %}"style='font-size:24px;color:white'>登出 </a></button>
 <button type="button" class="btn btn-primary btn-lg" style='position:relative;left:38%;'><a href="{% url 'member:update' member.id %}"style='font-size:24px;color:white'>資料修改</a></button>
 <button type="button" class="btn btn-primary btn-lg" style='position:relative;left:39%;'><a href="{% url 'products:index' %}"style='font-size:24px;color:white'>購物明細 </a></button>

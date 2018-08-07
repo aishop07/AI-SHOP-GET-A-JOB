@@ -17,7 +17,7 @@ def login(request):
         pwd = request.POST['userpassword']
         member = Member.objects.filter(username=username,password=pwd).values('username')
         if member:
-            response = HttpResponse("<script>alert('登入成功');location.href='/'</script>")
+            response = HttpResponse("<script>alert('登入成功');location.href='/member/memberarea'</script>")
             if 'rememberme' in request.POST:
                 expiresdate = datetime.datetime.now() + datetime.timedelta(days=7)
                 response.set_cookie("name",member[0]['username'],expires=expiresdate)
@@ -62,7 +62,7 @@ def create(request):
         Member.objects.create(username=username,password=password,useremail=useremail,userbirth=userbirth)
         
         #todo 新增完成後轉到http://localhost:8000/member
-        return redirect("/member")
+        return redirect("/member/memberarea")
        
     title = "會員新增" 
     return render(request,'member/create.html',locals())
