@@ -4,14 +4,14 @@ import speech_recognition as sr
 import time
 import os
 from gtts import gTTS
-# from . import image_capture as ic
 from django.http import HttpResponse
+from . assistant import robot 
 # from . import chtatterbotchinese as cb
 # Create your views here.
 def index(request):
     return render(request,'home/index.html',locals()) 
 def virtualas(request):
-    next_page={'url':"/index"}   
+    next_page={'url':"/"}   
     chatbot = ChatBot(
     'Charlie',
     trainer='chatterbot.trainers.ListTrainer'
@@ -23,10 +23,13 @@ def virtualas(request):
                 "現在開始結帳",  
                 "註冊",
                 "正在前往註冊頁面",
+                '購物明細',
+                '即將為您顯示購物明細',
+                '拍照',
+                "開始拍照 請看著相機",
                 "不要",
                 "你說甚麼我聽不懂",
-                "好棒",
-                "你說甚麼我聽不懂",
+
     ]
     )
     def speak(audioString):
@@ -55,14 +58,16 @@ def virtualas(request):
         return data
 
     def botinout(data):
+        
         bot_input = chatbot.get_response(data)
         print(bot_input.serialize(),str(bot_input))  
         if len(str(bot_input))==0:
             bot_input='請再說一次'
         print('11111',bot_input)
+        request.session['sentence']=str(bot_input)
         speak(str(bot_input))
+        print(request.session['sentence'])
         return str(bot_input)
-        # return
     def friday(sentence):
         print(sentence)
         if "登入" in sentence:
@@ -77,9 +82,28 @@ def virtualas(request):
             # return_object=HttpResponse("<script>location.href='member/create'</script>")  
             next_page['url']="/member/create"
             print(3)
+        elif "購物明細" in sentence: 
+            if 'name' in request.COOKIES:
+                next_page['url']="/products"
+            else:
+                speak('您尚未登入，請先登入')
+                next_page['url']="/member/login"
+            print(4)
+        elif "拍照" in sentence: 
+            if 'name' in request.COOKIES:
+                next_page['url']="/takephotos"
+            else:
+                speak('您尚未登入，請先登入')
+                next_page['url']="/member/login"
+            print(5)
         else:
             print(4)
             friday(botinout(recordAudio()))          
     speak('您好!請問我可以為您做甚麼?')
+    request.session['sentence']='您好!請問我可以為您做甚麼?'
     friday(botinout(recordAudio()))
+    # return HttpResponse("<script>location.href='{}'</script>".format(next_page['url']))
     return redirect(next_page['url'])
+    #   test=robot()
+    #   test1=test.assistant()    
+    #   return redirect(test1)
