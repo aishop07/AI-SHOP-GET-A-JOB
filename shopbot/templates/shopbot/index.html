@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div>
+    <iframe id="chat" style="position: relative;left: 700px;width: 600px; height: 600px;background-color: white" src='https://webchat.botframework.com/embed/finalchatbot?s=1RAgTAF8TAE.cwA.emU.cFSd-Nm8AqaoQ3AHOpdOTMOcHwjX2DLuoRRDhSAjXu4'></iframe>
+</div>
+<script>
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', "https://webchat.botframework.com/api/tokens", true);
+    xhr.setRequestHeader('Authorization', 'BotConnector ' + '1RAgTAF8TAE.cwA.emU.cFSd-Nm8AqaoQ3AHOpdOTMOcHwjX2DLuoRRDhSAjXu4');
+    xhr.send();
+    xhr.onreadystatechange = processRequest;
+
+    function processRequest(e) {
+      if (xhr.readyState == 4  && xhr.status == 200) {
+        var response = JSON.parse(xhr.responseText);
+        document.getElementById("chat").src="https://webchat.botframework.com/embed/lucas-direct-line?t="+response
+      }
+    }
+
+  </script>
+{% endblock %}

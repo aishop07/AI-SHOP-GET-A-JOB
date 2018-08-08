@@ -25,7 +25,7 @@ SECRET_KEY = 'n@&s(ejoo$bh1p9g^md$qaa7e7*4lmhv-=@d&hu*=jdnf@t+$)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'home',
     'member',
     'products',
-    'photo'
+    'photo',
+    'shopbot'
 ]
 
 MIDDLEWARE = [
