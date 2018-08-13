@@ -34,6 +34,7 @@ urlpatterns = [
     path('member/',include('member.urls')),
     path('products/',include('products.urls')),
     path('photo/',include('photo.urls')),
+    path('shopbot/',include('shopbot.urls')),
     url(r'^api/', include(router_drinks.urls)),
     url(r'^api/', include(router_foods.urls)),
     url(r'^api/', include(router_orders.urls)),

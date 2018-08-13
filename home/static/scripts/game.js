@@ -23,12 +23,12 @@ heroImage.onload = function () {
 heroImage.src = "static/images/hero.png";
 
 // Monster image
-var monsterReady = false;
-var monsterImage = new Image();
-monsterImage.onload = function () {
-	monsterReady = true;
-};
-monsterImage.src = "static/images/monster.png";
+// var monsterReady = false;
+// var monsterImage = new Image();
+// monsterImage.onload = function () {
+// 	monsterReady = true;
+// };
+// monsterImage.src = "static/images/monster.png";
 
 //circle image
 var circleReady = false
@@ -42,9 +42,9 @@ circleImage.src = "static/images/circle.png"
 var hero = {
 	speed: 256 // movement in pixels per second
 };
-var monster = {};
+// var monster = {};
 var circle = {};
-var monstersCaught = 0;
+// var monstersCaught = 0;
 
 // Handle keyboard controls
 var keysDown = {};
@@ -64,8 +64,8 @@ var reset = function () {
 	circle.x = 210;
 	circle.y = 250;
 	// Throw the monster somewhere on the screen randomly
-	monster.x = 32 + (Math.random() * (canvas.width - 64));
-	monster.y = 32 + (Math.random() * (canvas.height - 64));
+	// monster.x = 32 + (Math.random() * (canvas.width - 64));
+	// monster.y = 32 + (Math.random() * (canvas.height - 64));
 };
 
 // Update game objects
@@ -115,9 +115,9 @@ var render = function () {
 		ctx.drawImage(heroImage, hero.x, hero.y);
 	}
 
-	if (monsterReady) {
-		ctx.drawImage(monsterImage, monster.x, monster.y);
-	}
+	// if (monsterReady) {
+	// 	ctx.drawImage(monsterImage, monster.x, monster.y);
+	// }
 	
 	// Score
 	// ctx.fillStyle = "rgb(250, 250, 250)";

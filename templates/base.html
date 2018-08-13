@@ -57,7 +57,7 @@
 				        </a>
 					</div> <!-- /.col-md-12 -->
                     <div class="col-md-3 col-sm-12">
-                      <a href="#"><img src="{% static 'images/ailogo.jpg'%}" >
+                      <a href="{% url 'home:index' %}"><img src="{% static 'images/ailogo.jpg'%}" >
                       </a>
                     </div>
                     
@@ -92,7 +92,7 @@
                 <span class="fa fa-cogs"></span>
                 登入/會員專區</a></li>
               {%endif%}
-							<li><a class="show-5 templatemo_page5" href="">
+							<li><a class="show-5 templatemo_page5" href="{% url 'shopbot:index' %}">
                             	<span class="fa fa-envelope"></span>
                              商店機器人</a></li>
 						</ul>

@@ -3,5 +3,5 @@
 {% block content %}   
     <div id="canvas" style="float:left;position: relative;left:180px"></div>
     <a href="{% url 'home:virtualas' %}"><img src="{% static 'images/AI.gif' %}" style='position: relative;left:430px'></a>
-    <div style="background-color:black;opacity:0.5;width: 479px;height:75px;position: relative;left:857px;"id="texts"><p style='position: relative;float:left;bottom:60px;color:white;font-size:20px'>{{request.session.sentence}}</p></div>
+    <div style="background-color:black;opacity:0.5;width: 479px;height:75px;position: relative;left:857px;"id="texts"><p style='position: relative;float:left;bottom:60px;color:white;font-size:20px'>{{outputword1}}</p></div>
 {% endblock %}
