@@ -7,5 +7,7 @@ from django.contrib import admin
 app_name='products'
 urlpatterns = [
     path('', views.index,name='index'),
-    path('products', views.products,name='list')
+    path('products', views.products,name='list'),
+    path('check/',views.check,name='check'),
+    path('detection/',views.detection,name='detection')
 ]
