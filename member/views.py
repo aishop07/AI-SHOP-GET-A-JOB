@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from .models import Member
 from django.http import HttpResponse
+from products.models import Orders,Foods,Drinks
 
 # Create your views here.
 def index(request):
@@ -137,12 +138,50 @@ def memberarea(request):
         name=request.COOKIES['name']
         # print(name)
         member = Member.objects.get(username=name)
+        orders = list(Orders.objects.filter(user_name=str(request.COOKIES['name'])).order_by('-datetime').values())
+        food = list(Foods.objects.filter(name__contains= 'pringles' ).values())
+        drink = list(Drinks.objects.filter(name__contains= 'cafe' ).values())
+        Food = list(Foods.objects.all().values())
+        Drink = list(Drinks.objects.all().values())
+        print(Food, Drink)
+        i=0
+        result=[]
+        while i < len(orders):
+            #print(orders[i]['product_name'])
+            result.append(orders[i]['product_name'])
+            i+=1
+        countresult=[result.count('pringles'),result.count('cafe')]
+
+        #result1=[]
+        if result.count('pringles')>result.count('cafe'):
+            img1=food[0]['image']
+            img2=food[1]['image']
+            img3=food[2]['image']
+            img4=food[3]['image']
+            # for i in food:
+            #     result1.append(i['image'])          
+                
+        elif  result.count('pringles')<result.count('cafe'):
+            img1=drink[0]['image']
+            img2=drink[1]['image']
+            img3=drink[2]['image']
+            img4=drink[3]['image']
+            # for i in drink:
+            #     result1.append(i['image'])      
+        else:
+            img1=Food[6]['image']
+            img2=Food[7]['image']
+            img3=Drink[6]['image']
+            img4=Drink[7]['image']   
+
+       
         return render(request,'member/memberarea.html',locals())
 
     else:
         response = HttpResponse("<script>alert('請先登入喔!');location.href='/member/login'</script>")
         return response
         # return render(request,'member/memberarea.html',locals())
+
 
 
      
